@@ -162,4 +162,29 @@ describe('slugPress', () => {
 
     expect(actual).toBe(expected);
   });
+
+  test('should handle custom replacements', () => {
+    const input = 'hello world';
+    const options: SlugPressOptions = { customReplacements: [['world', 'planet']] };
+
+    const actual = slugPress(input, options);
+    const expected = 'hello-planet';
+
+    expect(actual).toBe(expected);
+  });
+
+  test('should apply multiple custom replacements', () => {
+    const input = 'hello world';
+    const options: SlugPressOptions = {
+      customReplacements: [
+        ['hello', 'hi'],
+        ['world', 'planet']
+      ]
+    };
+
+    const actual = slugPress(input, options);
+    const expected = 'hi-planet';
+
+    expect(actual).toBe(expected);
+  });
 });

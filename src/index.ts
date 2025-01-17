@@ -4,6 +4,7 @@ export interface SlugPressOptions {
   caseStyle?: 'original' | 'lowercase' | 'uppercase';
   maxLength?: number;
   stopWords?: string[];
+  customReplacements?: [string, string][];
 }
 
 export const slugPress = (input: string, options: SlugPressOptions = {}): string => {
@@ -12,7 +13,8 @@ export const slugPress = (input: string, options: SlugPressOptions = {}): string
     removeSpecialChars = true,
     caseStyle = 'original',
     maxLength = Infinity,
-    stopWords = []
+    stopWords = [],
+    customReplacements = []
   } = options;
 
   // Normalization of the stop word list
@@ -33,6 +35,12 @@ export const slugPress = (input: string, options: SlugPressOptions = {}): string
       .split(/\s+/)
       .filter((word) => !normalizedStopWords.includes(word.toLowerCase()))
       .join(' ');
+  }
+
+  // Applying custom substitutions
+  for (const [target, replacement] of customReplacements) {
+    const regex = new RegExp(target, 'g');
+    result = result.replace(regex, replacement);
   }
 
   // Replacing spaces with a separator
