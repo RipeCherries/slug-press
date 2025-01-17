@@ -142,4 +142,24 @@ describe('slugPress', () => {
 
     expect(actual).toBe(expected);
   });
+
+  test('should remove stop words from input', () => {
+    const input = 'hello world test case';
+    const options: SlugPressOptions = { stopWords: ['world', 'test'] };
+
+    const actual = slugPress(input, options);
+    const expected = 'hello-case';
+
+    expect(actual).toBe(expected);
+  });
+
+  test('should handle stop words with case insensitive comparison', () => {
+    const input = 'Hello World Test Case';
+    const options: SlugPressOptions = { stopWords: ['world', 'TEST'] };
+
+    const actual = slugPress(input, options);
+    const expected = 'Hello-Case';
+
+    expect(actual).toBe(expected);
+  });
 });

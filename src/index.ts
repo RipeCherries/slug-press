@@ -3,10 +3,20 @@ export interface SlugPressOptions {
   removeSpecialChars?: boolean;
   caseStyle?: 'original' | 'lowercase' | 'uppercase';
   maxLength?: number;
+  stopWords?: string[];
 }
 
 export const slugPress = (input: string, options: SlugPressOptions = {}): string => {
-  const { separator = '-', removeSpecialChars = true, caseStyle = 'original', maxLength = Infinity } = options;
+  const {
+    separator = '-',
+    removeSpecialChars = true,
+    caseStyle = 'original',
+    maxLength = Infinity,
+    stopWords = []
+  } = options;
+
+  // Normalization of the stop word list
+  const normalizedStopWords = stopWords.map((word) => word.toLowerCase());
 
   // Removing spaces at the edges of a line
   let result = input.trim();
@@ -15,6 +25,14 @@ export const slugPress = (input: string, options: SlugPressOptions = {}): string
   if (removeSpecialChars) {
     result = result.replace(/[^\w\s]/g, ' ');
     result = result.trim();
+  }
+
+  // Removing stop words
+  if (normalizedStopWords.length > 0) {
+    result = result
+      .split(/\s+/)
+      .filter((word) => !normalizedStopWords.includes(word.toLowerCase()))
+      .join(' ');
   }
 
   // Replacing spaces with a separator
