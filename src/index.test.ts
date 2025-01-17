@@ -93,4 +93,33 @@ describe('slugPress', () => {
 
     expect(actual).toBe(expected);
   });
+
+  test('should keep case as original by default', () => {
+    const input = 'Hello World';
+
+    const actual = slugPress(input);
+    const expected = 'Hello-World';
+
+    expect(actual).toBe(expected);
+  });
+
+  test('should convert to lowercase when caseStyle is "lowercase"', () => {
+    const input = 'Hello World';
+    const options: SlugPressOptions = { caseStyle: 'lowercase' };
+
+    const actual = slugPress(input, options);
+    const expected = 'hello-world';
+
+    expect(actual).toBe(expected);
+  });
+
+  test('should convert to uppercase when caseStyle is "uppercase"', () => {
+    const input = 'Hello World';
+    const options: SlugPressOptions = { caseStyle: 'uppercase' };
+
+    const actual = slugPress(input, options);
+    const expected = 'HELLO-WORLD';
+
+    expect(actual).toBe(expected);
+  });
 });
