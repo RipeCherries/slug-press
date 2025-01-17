@@ -2,10 +2,11 @@ export interface SlugPressOptions {
   separator?: string;
   removeSpecialChars?: boolean;
   caseStyle?: 'original' | 'lowercase' | 'uppercase';
+  maxLength?: number;
 }
 
 export const slugPress = (input: string, options: SlugPressOptions = {}): string => {
-  const { separator = '-', removeSpecialChars = true, caseStyle = 'original' } = options;
+  const { separator = '-', removeSpecialChars = true, caseStyle = 'original', maxLength = Infinity } = options;
 
   // Removing spaces at the edges of a line
   let result = input.trim();
@@ -24,6 +25,15 @@ export const slugPress = (input: string, options: SlugPressOptions = {}): string
     result = result.toLowerCase();
   } else if (caseStyle === 'uppercase') {
     result = result.toUpperCase();
+  }
+
+  // Limiting the length of a string while preserving words
+  if (result.length > maxLength) {
+    const words = result.split(separator);
+    result = words.reduce((acc, word) => {
+      const nextSegment = acc ? `${acc}${separator}${word}` : word;
+      return nextSegment.length <= maxLength ? nextSegment : acc;
+    }, '');
   }
 
   return result;

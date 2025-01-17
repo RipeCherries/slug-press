@@ -122,4 +122,24 @@ describe('slugPress', () => {
 
     expect(actual).toBe(expected);
   });
+
+  test('should limit the result to maxLength if provided', () => {
+    const input = 'hello world slug press test';
+    const options: SlugPressOptions = { maxLength: 11 };
+
+    const actual = slugPress(input, options);
+    const expected = 'hello-world';
+
+    expect(actual).toBe(expected);
+  });
+
+  test('should return an empty string if maxLength is 0', () => {
+    const input = 'hello world';
+    const options: SlugPressOptions = { maxLength: 0 };
+
+    const actual = slugPress(input, options);
+    const expected = '';
+
+    expect(actual).toBe(expected);
+  });
 });
